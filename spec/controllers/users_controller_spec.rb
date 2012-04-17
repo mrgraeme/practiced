@@ -3,6 +3,37 @@ require 'spec_helper'
 describe UsersController do
   render_views
 
+  describe "GET 'show" do
+    before(:each) do
+      @user = Factory(:user)
+    end
+
+    it "should be successful" do
+      get :show, :id => @user
+      response.should be_success
+    end
+
+    it "Should find the correct user" do
+      get :show, :id => @user
+      assigns(:user).should == @user
+    end
+
+    it "should have correct title" do
+      get :show, :id => @user
+      response.should have_selector("title", :content => @user.name)
+    end
+
+    it "should have correct header" do
+      get :show, :id => @user
+      response.should have_selector("h1", :content => @user.name)
+    end
+
+    it "should have a profile image" do
+      get :show, :id => @user
+      response.should have_selector("h1>img", :class => "gravatar")
+    end
+  end
+
   describe "GET 'new'" do
     it "returns http success" do
       get 'new'
@@ -14,4 +45,9 @@ describe UsersController do
       response.should have_selector("title", :content => "Sign up")
     end
   end
+
+
+
+
+
 end
